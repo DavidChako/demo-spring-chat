@@ -14,5 +14,6 @@ data class Message @JvmOverloads constructor(
     @Id var id: String? = null)
 
 enum class ContentType {
-    PLAIN
+    PLAIN,
+    MARKDOWN
 }

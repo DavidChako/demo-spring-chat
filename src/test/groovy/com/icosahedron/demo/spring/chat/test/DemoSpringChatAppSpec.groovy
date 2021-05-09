@@ -1,6 +1,5 @@
 package com.icosahedron.demo.spring.chat.test
 
-import com.icosahedron.demo.spring.chat.controller.HtmlController
 import com.icosahedron.demo.spring.chat.repository.ContentType
 import com.icosahedron.demo.spring.chat.repository.Message
 import com.icosahedron.demo.spring.chat.repository.MessageRepository
@@ -27,14 +26,16 @@ final class DemoSpringChatAppSpec extends Specification {
     @Autowired MessageRepository messageRepository
 
     @Shared initialMessageCount = 10
+    def random = new Random()
 
     def setup() {
         (initialMessageCount-1..0).each {offset ->
+            def contentType = random.nextBoolean() ? ContentType.MARKDOWN : ContentType.PLAIN
             def content = '*testMessage' + offset + '*'
             def username = 'test' + offset
             def sent = Instant.now().minusSeconds(offset)
             def avatarLink = 'http://test.com'
-            def message = new Message(content, ContentType.PLAIN, sent, username, avatarLink)
+            def message = new Message(content, contentType, sent, username, avatarLink)
             messageRepository.save(message)
         }
     }
@@ -54,7 +55,11 @@ final class DemoSpringChatAppSpec extends Specification {
         savedMessages.each {message ->
             def avatarUrl = new URL(message.userAvatarImageLink)
             def userVM = new UserVM(message.username, avatarUrl)
-            def messageVM = new MessageVM(message.content, userVM, message.sent, message.id)
+
+            def content = message.contentType == ContentType.PLAIN ? message.content :
+                    '<body><p><em>' + message.content.replaceAll('\\*','') + '</em></p></body>'
+
+            def messageVM = new MessageVM(content, userVM, message.sent, message.id)
             expectedMessages.add(messageVM)
         }
 
@@ -63,6 +68,9 @@ final class DemoSpringChatAppSpec extends Specification {
 
         then:
         messages == expectedMessages
+
+        and:
+        println messages.join('\n')
     }
 
     @Unroll
@@ -79,7 +87,11 @@ final class DemoSpringChatAppSpec extends Specification {
             if (message.sent > lastMessage.sent) {
                 def avatarUrl = new URL(message.userAvatarImageLink)
                 def userVM = new UserVM(message.username, avatarUrl)
-                def messageVM = new MessageVM(message.content, userVM, message.sent, message.id)
+
+                def content = message.contentType == ContentType.PLAIN ? message.content :
+                        '<body><p><em>' + message.content.replaceAll('\\*','') + '</em></p></body>'
+
+                def messageVM = new MessageVM(content, userVM, message.sent, message.id)
                 expectedMessages.add(messageVM)
             }
         }
