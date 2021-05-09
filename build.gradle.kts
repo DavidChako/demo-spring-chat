@@ -25,11 +25,11 @@ dependencies {
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+
     runtimeOnly("com.h2database:h2")
 
-    implementation("org.codehaus.groovy:groovy:3.0.5")
+    testImplementation("org.codehaus.groovy:groovy:3.0.5")
     testImplementation("org.spockframework:spock-core:2.0-M3-groovy-3.0")
     testImplementation("org.spockframework:spock-spring:2.0-M3-groovy-3.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {

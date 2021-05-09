@@ -11,19 +11,24 @@ import java.net.URL
 @Primary
 class PersistentMessageService(val messageRepository: MessageRepository) : MessageService {
     override fun latest(): List<MessageVM> =
-        messageRepository.findLatest()
-            .map { with(it) { MessageVM(content, UserVM(username,
-                URL(userAvatarImageLink)), sent, id) } }
+        messageRepository.findLatest().map {
+            with(it) {
+                MessageVM(content, UserVM(username, URL(userAvatarImageLink)), sent, id)
+            }
+        }
 
     override fun after(lastMessageId: String): List<MessageVM> =
-        messageRepository.findLatest(lastMessageId)
-            .map { with(it) { MessageVM(content, UserVM(username,
-                URL(userAvatarImageLink)), sent, id) } }
+        messageRepository.findLatest(lastMessageId).map {
+            with(it) {
+                MessageVM(content, UserVM(username, URL(userAvatarImageLink)), sent, id)
+            }
+        }
 
     override fun post(message: MessageVM) {
         messageRepository.save(
-            with(message) { Message(content, ContentType.PLAIN, sent,
-                user.name, user.avatarImageLink.toString()) }
+            with(message) {
+                Message(content, ContentType.PLAIN, sent, user.name, user.avatarImageLink.toString())
+            }
         )
     }
 }

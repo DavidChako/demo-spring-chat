@@ -1,7 +1,6 @@
 package com.icosahedron.demo.spring.chat.service
 
 import com.github.javafaker.Faker
-import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 import java.net.URL
 import java.time.Instant
