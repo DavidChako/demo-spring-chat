@@ -19,7 +19,7 @@ import java.time.Instant
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = [ 'spring.datasource.url=jdbc:h2:mem:testdb' ]
+        properties = [ '"spring.r2dbc.url=r2dbc:h2:mem:///testdb;USER=sa;PASSWORD=password"' ]
 )
 final class DemoSpringChatAppSpec extends Specification {
     @Autowired TestRestTemplate client

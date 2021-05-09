@@ -1,7 +1,10 @@
 package com.icosahedron.demo.spring.chat.service
 
+import kotlinx.coroutines.flow.Flow
+
 interface MessageService {
-    fun latest() : List<MessageVM>
-    fun after(lastMessageId: String): List<MessageVM>
-    fun post(message: MessageVM)
+    fun latest() : Flow<MessageVM>
+    fun after(lastMessageId: String): Flow<MessageVM>
+    fun stream(): Flow<MessageVM>
+    suspend fun post(messages: Flow<MessageVM>)
 }
