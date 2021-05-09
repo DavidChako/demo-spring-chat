@@ -5,7 +5,7 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
 
 @Table("MESSAGES")
-data class Message(
+data class Message @JvmOverloads constructor(
     val content: String,
     val contentType: ContentType,
     val sent: Instant,
